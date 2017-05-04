@@ -11,7 +11,7 @@ namespace Logger.Sample
     {
         static void Main(string[] args)
         {
-            //LoggerFactory.Instance.AddConsole();
+            LoggerFactory.Instance.AddConsole();
             LoggerFactory.Instance.AddFile();
 
             var memoryStream = new MemoryStream();
@@ -27,30 +27,40 @@ namespace Logger.Sample
             for (int i = 0; i < 5; i++)
             {
                 var i1 = i;
-                tasks.Add(Task.Run(async () =>
-                {
-                    ILogger logger = LoggerFactory.Instance.CreateLogger<Program>();
+                //tasks.Add(Task.Run(async () =>
+                //{
+                //    ILogger logger = LoggerFactory.Instance.CreateLogger<Program>();
 
 
-                    loggers.Add(logger);
+                //    loggers.Add(logger);
 
-                    for (int j = 0; j < 10; j++)
-                    {
-                        await Task.Delay(100);
-
-                        await logger.LogInfoAsync($"{i1}. logger: asdasd");
-                        await logger.LogDebugAsync($"{i1}. logger: asdasd");
-                        await logger.LogErrorAsync($"{i1}. logger: asdasd");
-                        await logger.LogErrorAsync(new Exception(), $"{i1}. logger: asdasd");
-                    }
-                }));
+                //    for (int j = 0; j < 100; j++)
+                //    {
+                //        await logger.LogInfoAsync($"{i1}. logger: asdasd");
+                //        await logger.LogDebugAsync($"{i1}. logger: asdasd");
+                //        await logger.LogErrorAsync($"{i1}. logger: asdasd");
+                //        await logger.LogErrorAsync(new Exception(), $"{i1}. logger: asdasd");
+                //    }
+                //}));
+                
             }
+
+            ILogger logger = LoggerFactory.Instance.CreateLogger<Program>();
+            var task = logger.LogInfoAsync($"{0}. logger: asdasd");
+
+            Console.WriteLine("started");
+
+            Console.ReadLine();
+
+            task.Wait();
+
+            Console.WriteLine("finished");
 
             Task.WaitAll(tasks.ToArray());
 
-            foreach (var logger in loggers)
+            foreach (var l in loggers)
             {
-                logger.Dispose();
+                l.Dispose();
             }
         }
     }
