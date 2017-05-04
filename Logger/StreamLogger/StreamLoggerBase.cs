@@ -9,6 +9,10 @@ using Logger.ThreadSafeLoggerBase;
 
 namespace Logger.StreamLogger
 {
+    /// <summary>
+    /// Base class for stream based logger
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
     public abstract class StreamLoggerBase<TSource> : ThreadSafeLoggerBase<TSource>
     {
         private readonly StreamLoggerOptions _options;
@@ -23,8 +27,17 @@ namespace Logger.StreamLogger
             WriteToStream(_options.LogFormatter.Format(log));
         }
 
+        /// <summary>
+        /// Create a streamWriter with the stream
+        /// </summary>
+        /// <returns></returns>
         protected abstract StreamWriter GetStreamWriter();
 
+        /// <summary>
+        /// Write a message into the stream with <see cref="GetStreamWriter"/>
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         protected virtual StreamWriter WriteToStream(string data)
         {
             var streamWriter = GetStreamWriter();

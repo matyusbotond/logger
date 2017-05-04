@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace Logger.FileLogger
 {
+    /// <summary>
+    /// Log in file
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
     public class FileLogger<TSource> : StreamLoggerBase<TSource>
     {
         private readonly FileLoggerOptions _options;

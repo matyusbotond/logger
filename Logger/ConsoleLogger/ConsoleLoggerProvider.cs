@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Logger.ConsoleLogger
 {
+    /// <summary>
+    /// Provide an ConsoleLogger
+    /// </summary>
     public class ConsoleLoggerProvider : ILoggerProvider
     {
         private readonly ConsoleLoggerOptions _options;

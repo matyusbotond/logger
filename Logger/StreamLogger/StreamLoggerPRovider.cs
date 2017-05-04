@@ -7,11 +7,19 @@ using System.Threading.Tasks;
 
 namespace Logger.StreamLogger
 {
+    /// <summary>
+    /// Provide a StreamLogger
+    /// </summary>
     public class StreamLoggerProvider : ILoggerProvider
     {
         private readonly Stream _stream;
         private readonly StreamLoggerOptions _options;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="stream">Log into this stream</param>
+        /// <param name="options"></param>
         public StreamLoggerProvider(Stream stream, StreamLoggerOptions options)
         {
             _stream = stream;

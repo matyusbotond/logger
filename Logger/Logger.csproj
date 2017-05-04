@@ -43,6 +43,7 @@
     <Compile Include="AggregatedLogger\AggregatedLogger.cs" />
     <Compile Include="ConsoleLogger\ConsoleLogger.cs" />
     <Compile Include="FileLogger\FileLoggerProvider.cs" />
+    <Compile Include="ILoggerFactory.cs" />
     <Compile Include="ILoggerProvider.cs" />
     <Compile Include="FileLogger\FileLogger.cs" />
     <Compile Include="FileLogger\FileLoggerOptions.cs" />

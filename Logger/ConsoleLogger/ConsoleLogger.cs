@@ -3,6 +3,10 @@ using Logger.ThreadSafeLoggerBase;
 
 namespace Logger.ConsoleLogger
 {
+    /// <summary>
+    /// Log in console thread safetly
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
     public class ConsoleLogger<TSource> : ThreadSafeLoggerBase<TSource>
     {
         private readonly ConsoleLoggerOptions _options;

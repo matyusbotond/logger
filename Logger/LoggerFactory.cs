@@ -7,7 +7,10 @@ using Logger.AggregatedLogger;
 
 namespace Logger
 {
-    public class LoggerFactory
+    /// <summary>
+    /// Singleton logger factory
+    /// </summary>
+    public class LoggerFactory : ILoggerFactory
     {
         public static LoggerFactory Instance { get; } = new LoggerFactory();
 
@@ -16,6 +19,7 @@ namespace Logger
         }
 
         protected Dictionary<Type, ILoggerProvider> _providers = new Dictionary<Type, ILoggerProvider>();
+
 
         public void AddProvider(ILoggerProvider provider)
         {

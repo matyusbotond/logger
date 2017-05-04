@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace Logger.StreamLogger
 {
+    /// <summary>
+    /// Log in stream
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
     public class StreamLogger<TSource> : StreamLoggerBase<TSource>
     {
         private readonly Stream _stream;

@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Logger.AggregatedLogger
 {
+    /// <summary>
+    /// Aggregate more logger in one
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
     public class AggregatedLogger<TSource> : ILogger<TSource>
     {
         private readonly ILogger<TSource>[] _loggers;
