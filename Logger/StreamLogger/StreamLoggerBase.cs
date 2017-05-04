@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Logger.ThreadSafeLoggerBase;
 
 namespace Logger.StreamLogger
 {
@@ -17,9 +18,9 @@ namespace Logger.StreamLogger
             _options = options;
         }
 
-        protected override void LogImpl(LogLevel logLevel, Exception exception, string message, DateTimeOffset dateTimeOffset)
+        protected override void LogImpl(Log log)
         {
-            WriteToStream(_options.LogMessageComposer(message, logLevel, exception, dateTimeOffset, Source));
+            WriteToStream(_options.LogFormatter.Format(log));
         }
 
         protected abstract StreamWriter GetStreamWriter();

@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Logger.LoggerBase;
 using Logger.Providers;
+using Logger.ThreadSafeLoggerBase;
 
 namespace Logger.StreamLogger
 {
@@ -12,24 +14,11 @@ namespace Logger.StreamLogger
     {
         public StreamLoggerOptions(
             IDateTimeProvider dateTimeProvider, 
-            Func<string, LogLevel, Exception, DateTimeOffset, Type, string> logMessageComposer) : base(dateTimeProvider, logMessageComposer)
+            ILogFormatter logFormatter) : base(dateTimeProvider, logFormatter)
         {
             
         }
 
-        public static StreamLoggerOptions DeafultOptions { get; } = new StreamLoggerOptions(new UtcDatetimeProvider(), (m, l, e, d, s) =>
-            {
-                if (m == null)
-                {
-                    m = "";
-                }
-
-                if (e != null)
-                {
-                    m += $" {e.ToString()}";
-                }
-
-                return $"{d} [{l}] {m}";
-            });
+        public static StreamLoggerOptions DeafultOptions { get; } = new StreamLoggerOptions(new UtcDatetimeProvider(), new SimpleLogFormatter());
     }
 }

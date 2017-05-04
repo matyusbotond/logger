@@ -1,4 +1,5 @@
 ﻿using System;
+using Logger.ThreadSafeLoggerBase;
 
 namespace Logger.ConsoleLogger
 {
@@ -11,21 +12,21 @@ namespace Logger.ConsoleLogger
             _options = options;
         }
 
-        protected override void LogImpl(LogLevel logLevel, Exception exception, string message, DateTimeOffset dateTimeOffset)
+        protected override void LogImpl(Log log)
         {
-            if (message == null && exception == null)
+            if (log.Message == null && log.Exception == null)
             {
                 throw new ArgumentNullException("Message or exception parameter must be not null!");
             }
 
-            if (message != null && message.Length > _options.MaxLength)
+            if (log.Message != null && log.Message.Length > _options.MaxLength)
             {
-                throw new ArgumentOutOfRangeException(nameof(message), $"The message must be lower than {_options.MaxLength} character!");
+                throw new ArgumentOutOfRangeException(nameof(log.Message), $"The message must be lower than {_options.MaxLength} character!");
             }
 
-            SetConsoleColors(logLevel);
+            SetConsoleColors(log.Level);
 
-            Console.WriteLine(_options.LogMessageComposer(message, logLevel, exception, dateTimeOffset, Source));
+            Console.WriteLine(_options.LogFormatter.Format(log));
 
             Console.ResetColor();
         }

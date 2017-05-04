@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Logger.LoggerBase;
 using Logger.Providers;
+using Logger.ThreadSafeLoggerBase;
 
 namespace Logger.ConsoleLogger
 {
@@ -13,7 +15,7 @@ namespace Logger.ConsoleLogger
             Dictionary<LogLevel, ConsoleColor> consoleColors, 
             int maxLength, 
             IDateTimeProvider dateTimeProvider, 
-            Func<string, LogLevel, Exception, DateTimeOffset, Type, string> logMessageComposer) : base(dateTimeProvider, logMessageComposer)
+            ILogFormatter logFormatter) : base(dateTimeProvider, logFormatter)
         {
             if (maxLength <= 0)
             {
@@ -36,19 +38,6 @@ namespace Logger.ConsoleLogger
                 {LogLevel.Debug, ConsoleColor.Gray},
                 {LogLevel.Info, ConsoleColor.Green},
                 {LogLevel.Error, ConsoleColor.Red},
-            }, 1000, new UtcDatetimeProvider(), (m, l, e, s, d) =>
-            {
-                if (m == null)
-                {
-                    m = "";
-                }
-
-                if (e != null)
-                {
-                    m += $" {e.ToString()}";
-                }
-
-                return $"{d} [{l}] {m}";
-            });
+            }, 1000, new UtcDatetimeProvider(), new SimpleLogFormatter());
     }
 }

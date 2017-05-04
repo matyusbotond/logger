@@ -13,30 +13,79 @@ namespace Logger.FileLogger
     {
         private readonly FileLoggerOptions _options;
 
-        //TODO átgondolni
-        private static int _rotatetNumber = 0;
-
         public FileLogger(FileLoggerOptions options) : base(options)
         {
             _options = options;
         }
 
-        protected override void LogImpl(LogLevel logLevel, Exception exception, string message, DateTimeOffset dateTimeOffset)
+        protected override void LogImpl(Log log)
         {
-            //TODO set rotate number
+            if (IsArchivable())
+            {
+                ArchiveLogs();
+            }
 
-            WriteToStream(_options.LogMessageComposer(message, logLevel, exception, dateTimeOffset, Source)).Dispose();
+            WriteToStream(_options.LogFormatter.Format(log)).Dispose();
+        }
+
+        protected virtual bool IsArchivable()
+        {
+            var filePath = ComposeFilePath(ComposeOriginalFileName());
+
+            if (!File.Exists(filePath))
+            {
+                return false;
+            }
+
+            return new FileInfo(filePath).Length >= _options.RotatetSize;
+        }
+
+        protected virtual void ArchiveLogs()
+        {
+            File.Move(ComposeFilePath(ComposeOriginalFileName()), ComposeFilePath(ComposeNextArchivedFileName()));
         }
 
         protected override StreamWriter GetStreamWriter()
         {
-            return File.AppendText(Path.Combine(_options.FileLocation, ComposeFileName(_rotatetNumber)));
+            return File.AppendText(ComposeFilePath(ComposeOriginalFileName()));
         }
 
-
-        protected virtual string ComposeFileName(int roatetNumber)
+        protected string ComposeFilePath(string fileName)
         {
-            return $"{_options.FileName}.{roatetNumber}.{_options.FileExtension}";
+            return Path.Combine(_options.FileLocation, fileName);
+        }
+
+        protected virtual string ComposeOriginalFileName()
+        {
+            return $"{_options.FileName}.{_options.FileExtension}";
+        }
+        protected virtual string ComposeNextArchivedFileName()
+        {
+            var originalFile = new FileInfo(ComposeFilePath(ComposeOriginalFileName()));
+
+            var logFiles = originalFile?.Directory?.GetFiles($"{_options.FileName}.*.{_options.FileExtension}");
+
+            int nextNumber = 1;
+
+            if (logFiles != null && logFiles.Any())
+            {
+                nextNumber = 1 + logFiles.Select(f =>
+                    {
+                        int number;
+
+                        var parts = f.Name.Split('.');
+
+                        if (int.TryParse(parts[parts.Length-2], out number))
+                        {
+                            return number;
+                        }
+
+                        return 0;
+                    })
+                    .Max();
+            }
+
+            return $"{_options.FileName}.{nextNumber}.{_options.FileExtension}";
         }
     }
 }

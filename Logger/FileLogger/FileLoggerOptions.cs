@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Logger.LoggerBase;
 using Logger.Providers;
 using Logger.StreamLogger;
 
@@ -23,7 +24,7 @@ namespace Logger.FileLogger
             string fileExtension,
             string fileLocation,
             IDateTimeProvider dateTimeProvider, 
-            Func<string, LogLevel, Exception, DateTimeOffset, Type, string> logMessageComposer) : base(dateTimeProvider, logMessageComposer)
+            ILogFormatter logFormatter) : base(dateTimeProvider, logFormatter)
         {
             //TODO paraméterek vizsgálata
             RotatetSize = rotatetSize;
@@ -33,23 +34,10 @@ namespace Logger.FileLogger
         }
 
         public new static FileLoggerOptions DeafultOptions { get; } = new FileLoggerOptions(
-            5000,
+            5*1024,
             "log",
             "txt",
             "",
-            new UtcDatetimeProvider(), (m, l, e, d, s) =>
-        {
-            if (m == null)
-            {
-                m = "";
-            }
-
-            if (e != null)
-            {
-                m += $" {e.ToString()}";
-            }
-
-            return $"{d} [{l}] {m}";
-        });
+            new UtcDatetimeProvider(), new SimpleLogFormatter());
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Logger.LoggerBase;
 
-namespace Logger
+namespace Logger.ThreadSafeLoggerBase
 {
     public abstract class ThreadSafeLoggerBase<TSource> : LoggerBase<TSource>
     {
@@ -17,11 +14,11 @@ namespace Logger
 
         public override void Log(LogLevel logLevel, Exception exception, string message)
         {
-            var now = _options.DateTimeProvider.Now;
+            var log = CreateLog(logLevel, exception, message);
 
             lock (_options.SyncObject)
             {
-                LogImpl(logLevel, exception, message, now);
+                LogImpl(log);
             }
         }
     }

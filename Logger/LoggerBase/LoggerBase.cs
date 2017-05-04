@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Logger
+namespace Logger.LoggerBase
 {
     public abstract class LoggerBase<TSource> : ILogger<TSource>
     {
@@ -23,10 +19,15 @@ namespace Logger
 
         public virtual void Log(LogLevel logLevel, Exception exception, string message)
         {
-            LogImpl(logLevel, exception,message, _options.DateTimeProvider.Now);
+            LogImpl(CreateLog(logLevel, exception,message));
         }
 
-        protected abstract void LogImpl(LogLevel logLevel, Exception exception, string message, DateTimeOffset dateTimeOffset);
+        protected virtual Log CreateLog(LogLevel logLevel, Exception exception, string message)
+        {
+            return new Log(_options.DateTimeProvider.Now, exception, message, logLevel, Source);
+        }
+
+        protected abstract void LogImpl(Log log);
 
         public virtual void Dispose()
         {
