@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>matyusbotond.Logger</id>
+    <version>$version$</version>
+    <title>matyusbotond.Logger</title>
+    <authors>matyusbotond</authors>
+    <owners>matyusbotond</owners>
+    <projectUrl>https://github.com/matyusbotond/logger</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Logger utility of really awesome projects</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>logger</tags>
+  </metadata>
+</package>

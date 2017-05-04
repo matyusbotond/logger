@@ -15,53 +15,27 @@ namespace Logger.Sample
             LoggerFactory.Instance.AddFile();
 
             var memoryStream = new MemoryStream();
+
             LoggerFactory.Instance.AddStream(memoryStream);
 
-            var streamLogs = Encoding.UTF8.GetString(memoryStream.ToArray());
+            var logger = LoggerFactory.Instance.CreateLogger<Program>();
 
-            Console.WriteLine(streamLogs);
+            logger.LogInfo("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            logger.LogDebug("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            logger.LogError("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            logger.LogError(new Exception("Lorem ipsum dolor sit amet, consectetur adipiscing elit."));
+            logger.LogError(new Exception("Lorem ipsum dolor sit amet, consectetur adipiscing elit."), "Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
 
-            var tasks = new List<Task>();
-            var loggers = new List<ILogger>();
+            SampleAsync(logger).Wait();
+        }
 
-            for (int i = 0; i < 5; i++)
-            {
-                var i1 = i;
-                //tasks.Add(Task.Run(async () =>
-                //{
-                //    ILogger logger = LoggerFactory.Instance.CreateLogger<Program>();
-
-
-                //    loggers.Add(logger);
-
-                //    for (int j = 0; j < 100; j++)
-                //    {
-                //        await logger.LogInfoAsync($"{i1}. logger: asdasd");
-                //        await logger.LogDebugAsync($"{i1}. logger: asdasd");
-                //        await logger.LogErrorAsync($"{i1}. logger: asdasd");
-                //        await logger.LogErrorAsync(new Exception(), $"{i1}. logger: asdasd");
-                //    }
-                //}));
-                
-            }
-
-            ILogger logger = LoggerFactory.Instance.CreateLogger<Program>();
-            var task = logger.LogInfoAsync($"{0}. logger: asdasd");
-
-            Console.WriteLine("started");
-
-            Console.ReadLine();
-
-            task.Wait();
-
-            Console.WriteLine("finished");
-
-            Task.WaitAll(tasks.ToArray());
-
-            foreach (var l in loggers)
-            {
-                l.Dispose();
-            }
+        private static async Task SampleAsync(ILogger<Program> logger)
+        {
+            await logger.LogInfoAsync("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            await logger.LogDebugAsync("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            await logger.LogErrorAsync("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            await logger.LogErrorAsync(new Exception("Lorem ipsum dolor sit amet, consectetur adipiscing elit."));
+            await logger.LogErrorAsync(new Exception("Lorem ipsum dolor sit amet, consectetur adipiscing elit."), "Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
         }
     }
 }

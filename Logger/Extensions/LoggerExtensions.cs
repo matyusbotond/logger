@@ -27,22 +27,22 @@ namespace Logger.Extensions
 
         public static Task LogDebugAsync(this ILogger logger, string message)
         {
-            return Task.Run(() => logger.Log(LogLevel.Debug, null, message));
+            return Task.Run(() => logger.LogDebug(message));
         }
 
         public static Task LogInfoAsync(this ILogger logger, string message)
         {
-            return Task.Run(() => logger.Log(LogLevel.Info, null, message));
+            return Task.Run(() => logger.LogInfo(message));
         }
 
         public static Task LogErrorAsync(this ILogger logger, string message)
         {
-            return Task.Run(() => logger.Log(LogLevel.Error, null, message));
+            return Task.Run(() => logger.LogError(message));
         }
 
-        public static Task LogErrorAsync(this ILogger logger, Exception exception, string message)
+        public static Task LogErrorAsync(this ILogger logger, Exception exception, string message = null)
         {
-            return Task.Run(() => logger.Log(LogLevel.Error, exception, message));
+            return Task.Run(() => logger.LogError(exception, message));
         }
     }
 }
