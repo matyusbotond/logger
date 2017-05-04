@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Logger.Extensions;
 
 namespace Logger.Sample
 {
@@ -10,7 +11,7 @@ namespace Logger.Sample
     {
         static void Main(string[] args)
         {
-            LoggerFactory.Instance.AddConsole();
+            //LoggerFactory.Instance.AddConsole();
             LoggerFactory.Instance.AddFile();
 
             var memoryStream = new MemoryStream();
@@ -23,35 +24,24 @@ namespace Logger.Sample
             var tasks = new List<Task>();
             var loggers = new List<ILogger>();
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 5; i++)
             {
-                tasks.Add(Task.Run(() =>
+                var i1 = i;
+                tasks.Add(Task.Run(async () =>
                 {
-                    ILogger logger;
+                    ILogger logger = LoggerFactory.Instance.CreateLogger<Program>();
 
-                    switch (i%3)
-                    {
-                        case 0:
-                            logger = LoggerFactory.Instance.CreateLogger<Program>();
-                            break;
-                        case 1:
-                            logger = LoggerFactory.Instance.CreateLogger<string>();
-                            break;
-                        case 2:
-                            logger = LoggerFactory.Instance.CreateLogger<int>();
-                            break;
-                        default:
-                            logger = LoggerFactory.Instance.CreateLogger<object>();
-                            break;
-                    }
 
                     loggers.Add(logger);
 
                     for (int j = 0; j < 10; j++)
                     {
-                        logger.LogDebug("asdasd");
-                        logger.LogInfo("asdasd");
-                        logger.LogError(new Exception("asdasd"), "asd");
+                        await Task.Delay(100);
+
+                        await logger.LogInfoAsync($"{i1}. logger: asdasd");
+                        await logger.LogDebugAsync($"{i1}. logger: asdasd");
+                        await logger.LogErrorAsync($"{i1}. logger: asdasd");
+                        await logger.LogErrorAsync(new Exception(), $"{i1}. logger: asdasd");
                     }
                 }));
             }

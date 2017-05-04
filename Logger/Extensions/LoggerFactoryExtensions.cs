@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Logger.ConsoleLogger;
 using Logger.FileLogger;
 using Logger.StreamLogger;
 
-namespace Logger
+namespace Logger.Extensions
 {
     public static class LoggerFactoryExtensions
     {

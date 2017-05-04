@@ -51,12 +51,12 @@
     <Compile Include="LoggerBase\SimpleLogFormatter.cs" />
     <Compile Include="LoggerBase\SimpleWithSourceLogFormatter.cs" />
     <Compile Include="LoggerFactory.cs" />
-    <Compile Include="LoggerFactoryExtensions.cs" />
+    <Compile Include="Extensions\LoggerFactoryExtensions.cs" />
     <Compile Include="Providers\IDateTimeProvider.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILoggerOfTSource.cs" />
     <Compile Include="LoggerBase\LoggerBase.cs" />
-    <Compile Include="LoggerExtensions.cs" />
+    <Compile Include="Extensions\LoggerExtensions.cs" />
     <Compile Include="LoggerBase\LoggerOptions.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
